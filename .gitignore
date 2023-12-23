@@ -1,0 +1,41 @@
+# Node.js
+node_modules/
+
+# React
+build/
+dist/
+
+# Express
+dist/
+node_modules/
+
+# MySQL
+*.sql
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Editor-specific files
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Dependency directories
+/.pnp
+.pnp.js
+
+# Yarn
+yarn-error.log
+
+# Miscellaneous
+*.tmp
+*.bak
+*.swp
