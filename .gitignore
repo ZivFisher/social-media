@@ -1,16 +1,17 @@
 # Node.js
 node_modules/
 
-# React
-build/
-dist/
-
 # Express
 dist/
 node_modules/
 
-# MySQL
-*.sql
+# MongoDB
+*.bson
+*.dmp
+
+# React
+build/
+dist/
 
 # OS-specific files
 .DS_Store
