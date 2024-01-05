@@ -51,7 +51,7 @@ export const themeSettings = (mode) => {
                     },
                     background: {
                         default: colorTokens.grey[900],
-                        paper: colorTokens.grey[800],
+                        alt: colorTokens.grey[800],
                     },
                 }
                 : {
@@ -70,7 +70,7 @@ export const themeSettings = (mode) => {
                     },
                     background: {
                         default: colorTokens.grey[10],
-                        paper: colorTokens.grey[0],
+                        alt: colorTokens.grey[0],
                     },
                 }),
         },

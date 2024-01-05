@@ -242,7 +242,7 @@ const AuthForm = () => {
                 m: "2rem 0",
                 p: "1rem",
                 backgroundColor: palette.primary.main,
-                color: palette.background.paper,
+                color: palette.background.alt,
                 "&:hover": { color: palette.primary.main },
               }}
             >

@@ -39,7 +39,7 @@ const Navbar = () => {
   const dark = palette.secondary.dark;
   const background = palette.background.default;
   const primaryLight = palette.primary.light;
-  const alt = palette.background.paper;
+  const alt = palette.background.alt;
 
   const fullName = `${user.firstName} ${user.lastName}`;
 

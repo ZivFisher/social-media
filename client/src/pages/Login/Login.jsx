@@ -10,7 +10,7 @@ const Login = () => {
     <Box>
       <Box
         width="100%"
-        bgcolor={theme.palette.background.paper}
+        bgcolor={theme.palette.background.alt}
         p="1rem 6%"
         textAlign="center"
       >
@@ -23,12 +23,12 @@ const Login = () => {
         m="2rem auto"
         width={isNonMobileScreens ? "50%" : "93%"}
         borderRadius="1.5rem"
-        bgcolor={theme.palette.background.paper}
+        bgcolor={theme.palette.background.alt}
       >
         <Typography variant="h5" fontWeight="500" marginBottom="1.5rem">
           Welcome to social media, the social media for familiy and friends.
         </Typography>
-        <AuthForm  />
+        <AuthForm />
       </Box>
     </Box>
   );
