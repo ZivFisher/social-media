@@ -65,18 +65,24 @@ const AuthForm = () => {
     }
     formData.append("picturePath", values.picture.name);
 
-    const savedUserResponse = await fetch(
-      "http://localhost:3001/auth/register",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-    const savedUser = await savedUserResponse.json();
-    onSubmitProps.resetForm();
+    try {
+      const savedUserResponse = await fetch(
+        "http://localhost:3001/auth/register",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
-    if (savedUser) {
-      setFormType("login");
+      if (!savedUserResponse.ok) throw new Error("Something went wrong.");
+      const savedUser = await savedUserResponse.json();
+      onSubmitProps.resetForm();
+
+      if (savedUser) {
+        setFormType("login");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 

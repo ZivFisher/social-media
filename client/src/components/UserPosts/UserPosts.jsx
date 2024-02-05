@@ -18,12 +18,13 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import Dropzone from "react-dropzone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import WidgetWrapper from "components/MuiComponents/WidgetWrapper";
 import FlexBetween from "components/MuiComponents/FlexBetween";
 import UserImage from "components/UserImage/UserImage";
+import Tesseract from "tesseract.js";
 
 const UserPosts = ({ picturePath }) => {
   const dispatch = useDispatch();
@@ -36,6 +37,72 @@ const UserPosts = ({ picturePath }) => {
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.secondary.mediumMain;
   const medium = palette.secondary.medium;
+
+  useEffect(() => {
+    console.log(`useEffect image:`, image);
+  }, [image]);
+
+  const handleImageUpload = async (file) => {
+    // Check if a file is selected
+    if (!file) {
+      console.error("No file selected.");
+      return;
+    }
+
+    const image = new Image();
+
+    // Set up event listener to handle image load
+    image.onload = async () => {
+      console.log(`handleImageUpload image:`, image);
+      let miniImages = [];
+
+      const {
+        data: { text, box, words, blocks, lines, paragraphs },
+      } = await Tesseract.recognize(
+        image,
+        "heb",
+        { logger: (info) => console.log(info) } // optional logger
+      );
+
+      console.log(`paragraphs:`, paragraphs);
+      console.log(`lines:`, lines);
+      console.log(`blocks:`, blocks);
+      console.log(`words:`, words);
+      console.log("text", text);
+      console.log("box", box);
+
+      lines.forEach((line) => {
+        const { bbox } = line;
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set canvas dimensions to match the bounding box
+        canvas.width = bbox.width;
+        canvas.height = bbox.height;
+
+        // Draw the section of the original image onto the canvas
+        ctx.drawImage(
+          image,
+          bbox.left,
+          bbox.top,
+          bbox.width,
+          bbox.height,
+          0,
+          0,
+          bbox.width,
+          bbox.height
+        );
+
+        // Convert the canvas to a data URL and add to the array
+        miniImages.push(canvas.toDataURL());
+      });
+
+      console.log(`miniImages:`, miniImages);
+    };
+
+    // Set the image source after the event listener is defined
+    image.src = URL.createObjectURL(file);
+  };
 
   const handlePost = async () => {
     const formData = new FormData();
@@ -51,7 +118,9 @@ const UserPosts = ({ picturePath }) => {
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     });
+    console.log(`response:`, response);
     const posts = await response.json();
+    console.log(`posts:`, posts);
     dispatch(setPosts({ posts }));
     setImage(null);
     setPost("");
@@ -83,7 +152,10 @@ const UserPosts = ({ picturePath }) => {
           <Dropzone
             acceptedFiles=".jpg,.jpeg,.png"
             multiple={false}
-            onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
+            onDrop={(acceptedFiles) => {
+              handleImageUpload(acceptedFiles[0]);
+              setImage(acceptedFiles[0]);
+            }}
           >
             {({ getRootProps, getInputProps }) => (
               <FlexBetween>
